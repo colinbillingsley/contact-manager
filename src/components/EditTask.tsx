@@ -121,8 +121,8 @@ const EditTask: React.FC<{
 				<DialogHeader>
 					<DialogTitle>Edit Task</DialogTitle>
 					<DialogDescription>
-						Fill in the fields to edit the task. Click save changes when you're
-						done to save the edits.
+						Fill in the fields to edit the task. Click save changes when
+						you&apos;re done to save the edits.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="grid gap-4 py-4">
