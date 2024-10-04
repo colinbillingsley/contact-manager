@@ -4,7 +4,7 @@ import React from "react";
 import { navLinkItemProps } from "@/types";
 import { usePathname } from "next/navigation";
 
-const NavLinkItem: React.FC<navLinkItemProps> = ({ href, icon, title }) => {
+const NavLinkItem: React.FC<navLinkItemProps> = ({ href, title }) => {
 	const pathname = usePathname();
 	const isActive: (path: string) => boolean = (path) => pathname === path;
 

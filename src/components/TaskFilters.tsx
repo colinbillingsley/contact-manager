@@ -68,8 +68,8 @@ const TaskFilters: React.FC<{
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-fit">
-					{filterOptions.map((item) => (
-						<div>
+					{filterOptions.map((item, index) => (
+						<div key={index}>
 							<DropdownMenuLabel>{item.label}</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							<DropdownMenuGroup>

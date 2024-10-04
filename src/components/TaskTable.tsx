@@ -270,9 +270,13 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 				<TableBody>
 					{filteredTasks.length > 0 ? (
 						filteredTasks.map((task) => (
-							<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+							<Dialog
+								open={isDialogOpen}
+								onOpenChange={setIsDialogOpen}
+								key={task.id}
+							>
 								<DialogTrigger asChild>
-									<TableRow key={task.id}>
+									<TableRow key={task.title}>
 										<TableCell className="font-medium text-nowrap">
 											{task.title}
 										</TableCell>
@@ -398,12 +402,7 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 				/>
 			)}
 			{taskToEdit && (
-				<EditTask
-					task={taskToEdit}
-					onClose={handleEditTaskClose}
-					open={true}
-					handleSortByDate={handleSortByDate}
-				/>
+				<EditTask task={taskToEdit} onClose={handleEditTaskClose} open={true} />
 			)}
 		</div>
 	);

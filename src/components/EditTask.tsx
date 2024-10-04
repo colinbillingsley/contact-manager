@@ -44,8 +44,7 @@ const EditTask: React.FC<{
 	task: taskProps;
 	onClose: () => void;
 	open: boolean;
-	handleSortByDate: () => void;
-}> = ({ task, onClose, open, handleSortByDate }) => {
+}> = ({ task, onClose, open }) => {
 	const { updateTask } = useAuthContext();
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(open);
 	const [date, setDate] = useState<Date | undefined>(new Date(task.dueDate));

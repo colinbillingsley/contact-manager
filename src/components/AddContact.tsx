@@ -156,8 +156,8 @@ const AddContact = () => {
 				<DialogHeader>
 					<DialogTitle>Add Contact</DialogTitle>
 					<DialogDescription>
-						Fill in the fields to create a contact. Click 'Add Contact' when
-						you're done.
+						Fill in the fields to create a contact. Click &apos;Add
+						Contact&apos; when you&apos;re done.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="grid grid-cols-4 items-center gap-4">

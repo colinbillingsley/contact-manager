@@ -126,8 +126,8 @@ const AddTask = () => {
 				<DialogHeader>
 					<DialogTitle>Create Task</DialogTitle>
 					<DialogDescription>
-						Fill in the fields for your desired task. Click create when you're
-						done to save the task.
+						Fill in the fields for your desired task. Click create when
+						you&apos;re done to save the task.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="grid gap-4 py-4">

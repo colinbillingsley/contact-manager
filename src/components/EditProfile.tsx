@@ -162,7 +162,7 @@ const EditProfile = () => {
 				<DialogHeader>
 					<DialogTitle>Edit profile</DialogTitle>
 					<DialogDescription>
-						Make changes to your profile here. Click save when you're done.
+						Make changes to your profile here. Click save when you&apos;re done.
 					</DialogDescription>
 				</DialogHeader>
 				<div key={user.name} className="grid grid-cols-4 items-center gap-4">

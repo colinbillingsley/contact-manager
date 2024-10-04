@@ -65,7 +65,7 @@ const Contacts = () => {
 						) : (
 							<div className="w-full">
 								<div className="sm:hidden w-full flex flex-col gap-1">
-									{filteredContacts.map((contact, index) => (
+									{filteredContacts.map((contact) => (
 										<Dialog
 											key={contact.id}
 											open={isDialogOpen}
@@ -104,7 +104,7 @@ const Contacts = () => {
 									))}
 								</div>
 								<div className="sm:flex w-full hidden flex-col gap-1">
-									{filteredContacts.map((contact, index) => (
+									{filteredContacts.map((contact) => (
 										<div
 											key={contact.id}
 											className="w-full flex items-center gap-2 px-2 py-4 hover:cursor-pointer hover:bg-neutral-50"

@@ -145,7 +145,7 @@ const EditContact: React.FC<{ contact: contactProps }> = ({ contact }) => {
 				<DialogHeader>
 					<DialogTitle>Edit Contact</DialogTitle>
 					<DialogDescription>
-						Make changes to the contact here. Click save when you're done.
+						Make changes to the contact here. Click save when you&apos;re done.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="grid grid-cols-4 items-center gap-4">

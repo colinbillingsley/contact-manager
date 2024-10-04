@@ -1,11 +1,5 @@
 "use client";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
 import { taskProps } from "@/types";
