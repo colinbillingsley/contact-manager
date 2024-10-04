@@ -16,13 +16,11 @@ import {
 	faFilterCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { Checkbox } from "./ui/checkbox";
-import { taskProps } from "@/types";
 
 const TaskFilters: React.FC<{
 	setAppliedFilters: (filters: string[]) => void;
 }> = ({ setAppliedFilters }) => {
 	const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-	const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
 	const filterOptions = [
 		{

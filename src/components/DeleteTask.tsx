@@ -8,10 +8,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import React, { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import React, { useState } from "react";
 import { taskProps } from "@/types";
 import { toast } from "sonner";
 

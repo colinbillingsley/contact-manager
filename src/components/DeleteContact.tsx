@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { contactProps, userProps } from "@/types";
+import { contactProps } from "@/types";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 

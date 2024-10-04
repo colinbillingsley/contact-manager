@@ -1,12 +1,5 @@
-import { navLinkItemProps, profileCardProps, userProps } from "@/types";
-import {
-	faAddressBook,
-	faBookmark,
-	faGaugeHigh,
-	faListCheck,
-	faPeopleGroup,
-	faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { navLinkItemProps } from "@/types";
+import { faAddressBook, faListCheck } from "@fortawesome/free-solid-svg-icons";
 
 export const navLinks: navLinkItemProps[] = [
 	{

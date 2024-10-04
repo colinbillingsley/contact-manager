@@ -1,5 +1,4 @@
 import {
-	faTrash,
 	faEnvelope,
 	faPhone,
 	faLocationPin,
@@ -8,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
 import EditContact from "./EditContact";
-import { Button } from "./ui/button";
 import { contactProps } from "@/types";
 import DeleteContact from "./DeleteContact";
 
