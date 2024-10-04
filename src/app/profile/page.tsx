@@ -25,7 +25,7 @@ const Profile = () => {
 						<EditProfile />
 					</div>
 				</div>
-				<div className="flex flex-col gap-8">
+				<div className="flex flex-col gap-8 w-full">
 					<ProfileCardInfo
 						mainTitle="Contact Information"
 						subTitle1="Email"

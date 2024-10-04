@@ -12,8 +12,8 @@ const NavLinkItem: React.FC<navLinkItemProps> = ({ href, icon, title }) => {
 		<Link
 			href={href}
 			className={`${
-				isActive(href) ? "font-bold text-black" : "text-gray-500"
-			} py-2 px-2 sm:px-4 hover:text-black transition-colors duration-300 ease-in-out`}
+				isActive(href) ? "font-bold text-primary bg-primary/5" : "text-gray-500"
+			} py-2 px-2 sm:px-4 hover:text-primary hover:bg-primary/5 transition-colors duration-300 ease-in-out rounded-md`}
 			data-
 		>
 			<span>{title}</span>

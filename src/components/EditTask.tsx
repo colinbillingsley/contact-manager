@@ -204,7 +204,7 @@ const EditTask: React.FC<{
 										Low{" "}
 										<FontAwesomeIcon
 											icon={faChevronDown}
-											className="ml-1 text-blue-500"
+											className="ml-1 text-primary"
 										/>
 									</SelectItem>
 									<SelectItem value="Medium">
@@ -244,7 +244,7 @@ const EditTask: React.FC<{
 									className={cn(
 										`w-[280px] justify-start text-left font-normal ${
 											dateError ? "border-red-500" : "border-gray-200"
-										} ${!date && "text-muted-foreground"}}`
+										} ${!date ? "text-muted-foreground" : "text-foreground"}}`
 									)}
 								>
 									<CalendarIcon className="mr-2 h-4 w-4" />
@@ -267,18 +267,10 @@ const EditTask: React.FC<{
 					</div>
 				</div>
 				<DialogFooter className="flex sm:flex-row flex-col-reverse gap-2 justify-end ">
-					<Button
-						variant={"outline"}
-						className="text-blue-600 border-blue-600 hover:bg-blue-600/15 hover:text-blue-600"
-						onClick={handleCancel}
-					>
+					<Button variant={"outline"} onClick={handleCancel}>
 						Cancel
 					</Button>
-					<Button
-						type="submit"
-						className="bg-blue-600 hover:bg-blue-600"
-						onClick={handleEditContact}
-					>
+					<Button type="submit" onClick={handleEditContact}>
 						Save Changes
 					</Button>
 				</DialogFooter>

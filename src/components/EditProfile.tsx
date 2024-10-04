@@ -148,7 +148,7 @@ const EditProfile = () => {
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-blue-600 hover:bg-blue-700">
+				<Button>
 					<FontAwesomeIcon
 						icon={faPen}
 						height={10}
@@ -304,18 +304,10 @@ const EditProfile = () => {
 				</div>
 
 				<DialogFooter className="gap-2 sm:gap-0">
-					<Button
-						variant={"outline"}
-						className="text-blue-600 border-blue-600 hover:bg-blue-600/15 hover:text-blue-600"
-						onClick={onCancel}
-					>
+					<Button variant={"outline"} onClick={onCancel}>
 						Cancel
 					</Button>
-					<Button
-						type="submit"
-						className="bg-blue-600 hover:bg-blue-600"
-						onClick={onSaveChanges}
-					>
+					<Button type="submit" onClick={onSaveChanges}>
 						Save changes
 					</Button>
 				</DialogFooter>

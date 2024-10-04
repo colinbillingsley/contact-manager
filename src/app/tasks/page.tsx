@@ -56,10 +56,7 @@ const Tasks = () => {
 							<span className="font-semibold">
 								{determineNumTasksCompleted()}/{tasks.length}
 							</span>
-							<Progress
-								value={progress}
-								className="w-[60%] [&>*]:bg-blue-600"
-							/>
+							<Progress value={progress} className="w-[60%] [&>*]:bg-primary" />
 							<FontAwesomeIcon icon={faListCheck} className="text-gray-400" />
 						</div>
 					</CardContent>
@@ -71,7 +68,7 @@ const Tasks = () => {
 					</CardHeader>
 					<CardContent>
 						<div className="w-full flex flex-col items-start justify-center gap-2">
-							<div className="w-full px-4 py-2 rounded-full flex items-center justify-between text-blue-500 bg-blue-500/10">
+							<div className="w-full px-4 py-2 rounded-full flex items-center justify-between text-primary bg-primary/10">
 								<div className="flex items-center gap-2">
 									<span>Low</span>
 									<FontAwesomeIcon icon={faChevronDown} />

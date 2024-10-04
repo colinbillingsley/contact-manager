@@ -39,6 +39,14 @@ import { Button } from "./ui/button";
 import DeleteTask from "./DeleteTask";
 import { useAuthContext } from "@/context/AuthContext";
 import EditTask from "./EditTask";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import TaskFilters from "./TaskFilters";
 
 const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 	const { removeTask, updateTask } = useAuthContext();
@@ -46,10 +54,11 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 	const [taskToDelete, setTaskToDelete] = useState<taskProps | null>(null);
 	const [taskToEdit, setTaskToEdit] = useState<taskProps | null>(null);
 	const [sortedTasks, setSortedTasks] = useState<taskProps[]>(tasks);
-	const [searchedTasks, setSearchedTasks] = useState<taskProps[]>(tasks);
 	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 	const [searchbar, setSearchbar] = useState<string>("");
 	const statusRef = useRef<string>("");
+	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+	const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
 	const maxDescriptionLength = 25;
 
@@ -85,7 +94,7 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 		switch (priority) {
 			case "Low":
 				return (
-					<FontAwesomeIcon icon={faChevronDown} className="text-blue-500" />
+					<FontAwesomeIcon icon={faChevronDown} className="text-primary" />
 				);
 			case "Medium":
 				return (
@@ -160,6 +169,19 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 		}
 	};
 
+	const translateStatus = (status: number): string => {
+		switch (status) {
+			case 0:
+				return "To Do";
+			case 1:
+				return "In Progress";
+			case 2:
+				return "Done";
+			default:
+				return "Uknown";
+		}
+	};
+
 	const handleStatusChange = (task: taskProps) => {
 		const newTask: taskProps = {
 			...task,
@@ -168,9 +190,29 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 		updateTask(newTask);
 	};
 
-	const filteredTasks = sortedTasks.filter((task) =>
-		task.title.toLowerCase().includes(searchbar.toLowerCase())
-	);
+	const filteredTasks: taskProps[] = sortedTasks.filter((task) => {
+		if (!task.title.toLowerCase().includes(searchbar.toLowerCase()))
+			return false;
+
+		// Check for applied filters
+		if (appliedFilters.length > 0) {
+			const statusFilter = appliedFilters.includes(task.status.toString());
+			const priorityFilter = appliedFilters.includes(task.priority);
+
+			// check and see if the filters has both a status and priority filter selected
+			if (
+				appliedFilters.some((filter) => ["0", "1", "2"].includes(filter)) &&
+				appliedFilters.some((filter) =>
+					["Low", "Medium", "High"].includes(filter)
+				)
+			) {
+				return statusFilter && priorityFilter; // both a status and priority are selected, return tasks that match both
+			} else {
+				return statusFilter || priorityFilter; // only a status or priority filter is selected, return tasks that match either
+			}
+		}
+		return true; // No filters applied
+	});
 
 	useEffect(() => {
 		handleSortByDate();
@@ -190,9 +232,10 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 					<SearchBar
 						title="Search for task by title"
 						handleSearchChange={handleSearchChange}
-						className="w-[130px] sm:w-fit"
+						className="w-[90px] sm:w-fit"
 					/>
 					<AddTask />
+					<TaskFilters setAppliedFilters={setAppliedFilters} />
 				</div>
 			</div>
 			<Table className="shadow-md text-xs md:text-sm">
@@ -227,67 +270,113 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 				<TableBody>
 					{filteredTasks.length > 0 ? (
 						filteredTasks.map((task) => (
-							<TableRow key={task.id}>
-								<TableCell className="font-medium text-nowrap">
-									{task.title}
-								</TableCell>
-								<TableCell>
-									{truncateDescription(task.description, maxDescriptionLength)}
-								</TableCell>
-								<TableCell className="">
-									<Select
-										onValueChange={(value) => {
-											statusRef.current = value;
-											handleStatusChange(task);
-										}}
-										defaultValue={desrcibeStatus(task.status)}
-									>
-										<SelectTrigger id="status" className="w-fit">
-											<SelectValue placeholder={desrcibeStatus(task.status)} />
-										</SelectTrigger>
-										<SelectContent position="popper">
-											<SelectItem value="todo">
-												<span className="bg-gray-400/15 p-1 rounded-lg text-nowrap">
-													To Do
-												</span>
-											</SelectItem>
-											<SelectItem value="inProgress">
-												<span className="bg-blue-500/15 p-1 rounded-lg text-nowrap">
-													In Progress
-												</span>
-											</SelectItem>
-											<SelectItem value="done">
-												<span className="bg-green-300/25 p-1 rounded-lg text-nowrap">
-													Done
-												</span>
-											</SelectItem>
-										</SelectContent>
-									</Select>
-								</TableCell>
-								<TableCell className="text-nowrap">
-									{formattedDate(task.dueDate)}
-								</TableCell>
-								<TableCell className="">
-									{priorityToIcon(task.priority)}
-								</TableCell>
-								<TableCell className="">
-									<DropdownMenu>
-										<DropdownMenuTrigger asChild>
-											<Button variant={"ghost"}>
-												<FontAwesomeIcon icon={faEllipsisVertical} />
-											</Button>
-										</DropdownMenuTrigger>
-										<DropdownMenuContent align="end" className="w-fit">
-											<DropdownMenuItem onClick={() => handleEditTask(task)}>
-												Edit Task
-											</DropdownMenuItem>
-											<DropdownMenuItem onClick={() => handleDeleteTask(task)}>
-												Delete Task
-											</DropdownMenuItem>
-										</DropdownMenuContent>
-									</DropdownMenu>
-								</TableCell>
-							</TableRow>
+							<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+								<DialogTrigger asChild>
+									<TableRow key={task.id}>
+										<TableCell className="font-medium text-nowrap">
+											{task.title}
+										</TableCell>
+										<TableCell>
+											{truncateDescription(
+												task.description,
+												maxDescriptionLength
+											)}
+										</TableCell>
+										<TableCell className="">
+											<Select
+												onValueChange={(value) => {
+													statusRef.current = value;
+													handleStatusChange(task);
+												}}
+												defaultValue={desrcibeStatus(task.status)}
+											>
+												<SelectTrigger id="status" className="w-fit">
+													<SelectValue
+														placeholder={desrcibeStatus(task.status)}
+													/>
+												</SelectTrigger>
+												<SelectContent position="popper">
+													<SelectItem value="todo">
+														<span className="bg-gray-400/15 p-1 rounded-lg text-nowrap">
+															To Do
+														</span>
+													</SelectItem>
+													<SelectItem value="inProgress">
+														<span className="bg-primary/15 p-1 rounded-lg text-nowrap">
+															In Progress
+														</span>
+													</SelectItem>
+													<SelectItem value="done">
+														<span className="bg-green-300/25 p-1 rounded-lg text-nowrap">
+															Done
+														</span>
+													</SelectItem>
+												</SelectContent>
+											</Select>
+										</TableCell>
+										<TableCell className="text-nowrap">
+											{formattedDate(task.dueDate)}
+										</TableCell>
+										<TableCell>{priorityToIcon(task.priority)}</TableCell>
+										<TableCell>
+											<DropdownMenu>
+												<DropdownMenuTrigger asChild>
+													<Button variant={"ghost"}>
+														<FontAwesomeIcon icon={faEllipsisVertical} />
+													</Button>
+												</DropdownMenuTrigger>
+												<DropdownMenuContent align="end" className="w-fit">
+													<DropdownMenuItem
+														onClick={(e) => {
+															e.stopPropagation(); // Prevent the click event from propagating
+															handleEditTask(task);
+														}}
+													>
+														Edit Task
+													</DropdownMenuItem>
+													<DropdownMenuItem
+														onClick={() => handleDeleteTask(task)}
+													>
+														Delete Task
+													</DropdownMenuItem>
+												</DropdownMenuContent>
+											</DropdownMenu>
+										</TableCell>
+									</TableRow>
+								</DialogTrigger>
+								<DialogContent className="max-w-lg">
+									<DialogHeader>
+										<DialogTitle className="text-left">
+											{task.title}
+										</DialogTitle>
+										<div className="w-full border-b-2 border-gray-200 py-1"></div>
+									</DialogHeader>
+									<div className="flex flex-col items-start gap-4 w-full">
+										<div className="flex flex-col gap-2">
+											<h2 className="font-bold">Description</h2>
+											<span>{task.description}</span>
+										</div>
+
+										<div className="flex flex-col gap-2">
+											<h2 className="font-bold">Status</h2>
+											<span>{translateStatus(task.status)}</span>
+										</div>
+
+										<div className="flex flex-col gap-2">
+											<h2 className="font-bold">Priority</h2>
+											<div className="flex items-center gap-2">
+												<span>{task.priority}</span>
+												{priorityToIcon(task.priority)}
+											</div>
+										</div>
+
+										<div className="flex flex-col gap-2">
+											<h2 className="font-bold">Due Date</h2>
+											<span>{format(task.dueDate, "MMM dd, yyyy")}</span>
+										</div>
+									</div>
+								</DialogContent>
+							</Dialog>
 						))
 					) : (
 						<TableRow className="">

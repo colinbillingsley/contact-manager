@@ -57,6 +57,16 @@ const AddContact = () => {
 		if (!industry) setIndustryError(true);
 	};
 
+	const resetFields = () => {
+		setName("");
+		setEmail("");
+		setPhone("");
+		setAddress("");
+		setJob("");
+		setCompany("");
+		setIndustry("");
+	};
+
 	const handleAddContact = () => {
 		if (
 			!name ||
@@ -87,14 +97,16 @@ const AddContact = () => {
 		addContact(newContact);
 
 		// Close the dialog
-		setIsDialogOpen(false);
 		toast.success("Contact has been added", {
 			description: `Name: ${name}`,
 		});
+		setIsDialogOpen(false);
+		resetFields();
 	};
 
 	const onCancel = () => {
 		setIsDialogOpen(false);
+		resetFields();
 		resetErrors();
 	};
 
@@ -136,7 +148,7 @@ const AddContact = () => {
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-blue-600 hover:bg-blue-700">
+				<Button>
 					<FontAwesomeIcon icon={faPlus} height={10} width={10} className="" />
 				</Button>
 			</DialogTrigger>
@@ -277,18 +289,10 @@ const AddContact = () => {
 				</div>
 
 				<DialogFooter className="gap-2 sm:gap-0">
-					<Button
-						variant={"outline"}
-						className="text-blue-600 border-blue-600 hover:bg-blue-600/15 hover:text-blue-600"
-						onClick={onCancel}
-					>
+					<Button variant={"outline"} onClick={onCancel}>
 						Cancel
 					</Button>
-					<Button
-						type="submit"
-						className="bg-blue-600 hover:bg-blue-700"
-						onClick={handleAddContact}
-					>
+					<Button type="submit" onClick={handleAddContact}>
 						Add Contact
 					</Button>
 				</DialogFooter>

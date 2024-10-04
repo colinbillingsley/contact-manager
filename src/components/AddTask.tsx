@@ -41,6 +41,7 @@ import {
 } from "@radix-ui/react-popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { SelectSingleEventHandler } from "react-day-picker";
 
 const AddTask = () => {
 	const { addTask, tasks } = useAuthContext();
@@ -54,6 +55,7 @@ const AddTask = () => {
 	const [descError, setDescError] = useState(false);
 	const [priorityError, setPriorityError] = useState(false);
 	const [dateError, setDateError] = useState(false);
+	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
 	const resetErrors = () => {
 		setTitleError(false);
@@ -107,13 +109,15 @@ const AddTask = () => {
 		priorityRef.current = "";
 	};
 
+	const handleDateSelect: SelectSingleEventHandler = (date) => {
+		setDate(date);
+		setIsPopoverOpen(false);
+	};
+
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 			<DialogTrigger asChild>
-				<Button
-					variant={"outline"}
-					className="text-blue-600 border-blue-600 hover:text-white hover:bg-blue-600"
-				>
+				<Button variant={"outline"}>
 					<span className="hidden sm:block">Add Task</span>
 					<FontAwesomeIcon icon={faPlus} className="sm:ml-2" />
 				</Button>
@@ -204,7 +208,7 @@ const AddTask = () => {
 										Low{" "}
 										<FontAwesomeIcon
 											icon={faChevronDown}
-											className="ml-1 text-blue-500"
+											className="ml-1 text-primary"
 										/>
 									</SelectItem>
 									<SelectItem value="Medium">
@@ -237,14 +241,14 @@ const AddTask = () => {
 								<span>Date</span>
 							)}
 						</Label>
-						<Popover>
+						<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
 							<PopoverTrigger asChild>
 								<Button
 									variant={"outline"}
 									className={cn(
 										`w-[280px] justify-start text-left font-normal ${
 											dateError ? "border-red-500" : "border-gray-200"
-										} ${!date && "text-muted-foreground"}}`
+										} ${!date ? "text-muted-foreground" : "text-foreground"}}`
 									)}
 								>
 									<CalendarIcon className="mr-2 h-4 w-4" />
@@ -255,7 +259,7 @@ const AddTask = () => {
 								<Calendar
 									mode="single"
 									selected={date}
-									onSelect={setDate}
+									onSelect={handleDateSelect}
 									onDayClick={() => {
 										setDateError(false);
 									}}
@@ -267,18 +271,10 @@ const AddTask = () => {
 					</div>
 				</div>
 				<DialogFooter className="flex sm:flex-row flex-col-reverse gap-2 justify-end ">
-					<Button
-						variant={"outline"}
-						className="text-blue-600 border-blue-600 hover:bg-blue-600/15 hover:text-blue-600"
-						onClick={handleCancel}
-					>
+					<Button variant={"outline"} onClick={handleCancel}>
 						Cancel
 					</Button>
-					<Button
-						type="submit"
-						className="bg-blue-600 hover:bg-blue-700"
-						onClick={handleAddTask}
-					>
+					<Button type="submit" onClick={handleAddTask}>
 						Create
 					</Button>
 				</DialogFooter>

@@ -10,11 +10,6 @@ import {
 
 export const navLinks: navLinkItemProps[] = [
 	{
-		href: "/",
-		icon: faGaugeHigh,
-		title: "Dashboard",
-	},
-	{
 		href: "/contacts",
 		icon: faAddressBook,
 		title: "Contacts",
