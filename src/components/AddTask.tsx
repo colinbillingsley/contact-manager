@@ -80,7 +80,7 @@ const AddTask = () => {
 		}
 
 		const newTask: taskProps = {
-			id: tasks.length,
+			id: tasks.length + 1,
 			title,
 			priority,
 			description,

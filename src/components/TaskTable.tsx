@@ -339,7 +339,10 @@ const TaskTable: React.FC<{ tasks: taskProps[] }> = ({ tasks }) => {
 														Edit Task
 													</DropdownMenuItem>
 													<DropdownMenuItem
-														onClick={() => handleDeleteTask(task)}
+														onClick={(e) => {
+															e.stopPropagation();
+															handleDeleteTask(task);
+														}}
 													>
 														Delete Task
 													</DropdownMenuItem>
